@@ -1,0 +1,90 @@
+{
+  "name": "growth-autopilot",
+  "version": "0.1.0",
+  "description": "Runnerless growth autopilot that generates SEO audits, proposes experiments, and drafts content without auto-publishing",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "growth": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/cli.ts --format esm --dts --clean",
+    "dev": "tsx watch src/cli.ts",
+    "lint": "eslint src --ext .ts --max-warnings=0",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "check": "pnpm run lint && pnpm run typecheck && pnpm run test",
+    "verify:fast": "pnpm run lint && pnpm run typecheck && pnpm run build",
+    "verify:full": "pnpm run verify:fast && pnpm run test",
+    "plan": "tsx src/cli.ts plan",
+    "run": "tsx src/cli.ts run",
+    "docs:verify": "node scripts/docs-verify.mjs",
+    "contracts:check": "tsx scripts/contracts-check.ts",
+    "contracts:compat": "tsx scripts/contracts-compat.ts",
+    "doctor": "tsx scripts/doctor.ts",
+    "fixtures:export": "tsx scripts/fixtures-export.ts",
+    "runnerless:audit": "echo 'Install @autopilot/audit-cli and run: autopilot-audit runnerless .'",
+    "prepublishOnly": "pnpm run build"
+  },
+  "keywords": [
+    "growth",
+    "seo",
+    "analytics",
+    "experiments",
+    "autopilot",
+    "jobforge",
+    "runnerless"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "commander": "^15.0.0",
+    "glob": "^11.0.0",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.1",
+    "@typescript-eslint/eslint-plugin": "^8.70.0",
+    "@typescript-eslint/parser": "^8.70.0",
+    "eslint": "^10.10.0",
+    "globals": "^17.12.0",
+    "tsup": "^8.3.5",
+    "tsx": "^4.23.13",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.1"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "pnpm": {
+    "overrides": {
+      "vitest@<3.2.6": "3.2.6",
+      "vite@<6.4.3": "6.4.3",
+      "rollup@>=4.0.0 <4.59.0": "4.59.0",
+      "minimatch@<3.1.4": "3.1.4",
+      "minimatch@>=9.0.0 <9.0.7": "9.0.7",
+      "brace-expansion@<1.1.16": "1.1.16",
+      "brace-expansion@>=2.0.0 <2.1.2": "2.1.2",
+      "flatted@<=3.4.1": "3.4.2",
+      "js-yaml@>=4.0.0 <4.3.0": "4.3.0",
+      "postcss@<=8.5.17": "8.5.18",
+      "picomatch@>=4.0.0 <4.0.4": "4.0.4",
+      "esbuild@<=0.24.2": "0.25.12",
+      "undici@>=7.0.0 <7.29.0": "7.29.0",
+      "minimatch@>=10.0.0 <10.2.3": "10.2.3",
+      "brace-expansion@<1.1.18": "1.1.18",
+      "postcss@<=8.5.22": "8.5.23",
+      "js-yaml@>=4.0.0 <4.3.1": "4.3.1",
+      "ajv@<6.14.0": "6.14.0",
+      "esbuild@>=0.27.3 <0.28.1": ">=0.28.1"
+    }
+  }
+}

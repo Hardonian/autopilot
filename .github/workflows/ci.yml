@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify-fast:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run verify:fast
+      - run: pnpm run contracts:check
+      - run: pnpm run contracts:compat
+      - run: pnpm run doctor
+      - name: Smoke test (plan)
+        run: pnpm run plan --config fixtures/smoke-config.json --out /tmp/smoke-plan --json
+      - name: Smoke test (run --smoke)
+        run: pnpm run run --smoke --config fixtures/smoke-config.json --out /tmp/smoke-run --json
+
+  verify-full:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run verify:full
+      - run: pnpm run contracts:check
+      - run: pnpm run contracts:compat
+      - run: pnpm run doctor
+      - name: Smoke test (plan)
+        run: pnpm run plan --config fixtures/smoke-config.json --out /tmp/smoke-plan --json
+      - name: Smoke test (run --smoke)
+        run: pnpm run run --smoke --config fixtures/smoke-config.json --out /tmp/smoke-run --json
+
+  docs-verify:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run docs:verify

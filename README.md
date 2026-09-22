@@ -55,6 +55,19 @@ pnpm --recursive test
 - **Package Manager:** pnpm (>= 9)
 - **Runtime:** Node.js >= 20
 
+
+## Related Repos
+
+### Platform Monorepos
+- [agent-infra](https://github.com/Hardonian/agent-infra) — control-plane, mission-ledger, agent-mesh, mcpwall
+- [agent-edge](https://github.com/Hardonian/agent-edge) — mesh-edge, pcap
+- [model-tools](https://github.com/Hardonian/model-tools) — model-forge, inference-api, ollama-router
+
+### Commercial
+- [hardonia-store](https://github.com/Hardonian/hardonia-store) — storefront
+- [comfyui-workflow-packs](https://github.com/Hardonian/comfyui-workflow-packs) — ComfyUI workflow products
+- [content-repo](https://github.com/Hardonian/content-repo) — blog posts and email sequences
+
 ## License
 
 Each module carries its own license. See individual `LICENSE` files for details.

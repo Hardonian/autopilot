@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support Autopilot | AI Control Center & Mesh Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo">SA</div>
+      <div>
+        <div class="brand-title">Support Autopilot</div>
+        <div class="brand-subtitle">Runnerless AI Agent & Autopilot Mesh</div>
+      </div>
+    </div>
+    <div class="header-badges">
+      <span class="badge-pill status-online" id="server-status">ONLINE (Healthy)</span>
+      <span class="badge-pill badge-mesh">
+        Mesh: FinOps & JobForge Connected
+      </span>
+      <span class="badge-pill roi-counter" id="header-roi">
+        ROI Saved: $1,420.50
+      </span>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="nav-tabs">
+    <button class="nav-tab active" data-tab="triage">Triage Command Center</button>
+    <button class="nav-tab" data-tab="copilot">AI Copilot & Draft Studio</button>
+    <button class="nav-tab" data-tab="router">Model Router & Cost Analytics</button>
+    <button class="nav-tab" data-tab="network">Autopilot Mesh Hub</button>
+    <button class="nav-tab" data-tab="kb">KB Explorer & Patch Diff</button>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Tab 1: Triage Command Center -->
+    <section id="tab-triage" class="tab-pane active">
+      <div class="grid-4 mb-15">
+        <div class="metric-box">
+          <div class="metric-label">Active Tickets</div>
+          <div class="metric-value" id="metric-ticket-count">8</div>
+          <div class="metric-sub">Multi-tenant queue</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Urgent / SLA Risk</div>
+          <div class="metric-value text-accent-red" id="metric-urgent-count">2</div>
+          <div class="metric-sub">&lt; 30m target SLA</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Avg Sentiment</div>
+          <div class="metric-value text-primary" id="metric-sentiment">-0.24</div>
+          <div class="metric-sub">AI Natural Language Score</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">PII Redactions</div>
+          <div class="metric-value text-accent-green" id="metric-pii-count">5</div>
+          <div class="metric-sub">12-pattern scrubber active</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Live Inbound Tickets</h3>
+            <button class="btn btn-primary" id="btn-triage-all">Triage All (AI)</button>
+          </div>
+          <div class="ticket-list" id="ticket-list-container">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Ticket & AI Intelligence Detail</h3>
+            <span class="badge-pill" id="detail-tier-badge">Enterprise Tier</span>
+          </div>
+          <div id="ticket-detail-view">
+            <p class="text-dim">Select a ticket from the left to inspect AI telemetry, sentiment, SLA projections, and PII audit flags.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 2: AI Copilot & Draft Studio -->
+    <section id="tab-copilot" class="tab-pane">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Draft Response Studio</h3>
+          </div>
+          <div class="form-group-col">
+            <div>
+              <label class="metric-label" for="draft-ticket-select">Select Ticket</label>
+              <select class="select-control w-full" id="draft-ticket-select" title="Select Support Ticket" aria-label="Select Support Ticket"></select>
+            </div>
+            <div class="form-grid-2">
+              <div>
+                <label class="metric-label" for="draft-model-tier">LLM Model Tier</label>
+                <select class="select-control w-full" id="draft-model-tier" title="Select LLM Model Tier" aria-label="Select LLM Model Tier">
+                  <option value="economy">Economy (Gemini 1.5 Flash / Fast)</option>
+                  <option value="reasoning">Reasoning (Gemini 1.5 Pro / Sonnet)</option>
+                  <option value="deterministic">Deterministic Heuristic (Offline $0)</option>
+                </select>
+              </div>
+              <div>
+                <label class="metric-label" for="draft-tone-select">Tone Preset</label>
+                <select class="select-control w-full" id="draft-tone-select" title="Select Tone Preset" aria-label="Select Tone Preset">
+                  <option value="friendly">Friendly & Empathetic</option>
+                  <option value="professional">Professional & Direct</option>
+                  <option value="technical">Technical & Detailed</option>
+                  <option value="concise">Concise / Summary</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="btn-generate-draft">Generate AI Draft with KB Citations</button>
+          </div>
+
+          <div class="mb-15">
+            <label class="metric-label">Verified Knowledge Base Citations</label>
+            <div id="draft-citations-container" class="citations-box">
+              <!-- Citations -->
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">AI Generated Draft Preview</h3>
+            <div class="btn-group">
+              <button class="btn btn-outline" id="btn-copy-draft">Copy</button>
+              <button class="btn btn-primary" id="btn-approve-draft">Approve & Send</button>
+            </div>
+          </div>
+          <div id="draft-output-container">
+            <pre id="draft-output-text">Click "Generate AI Draft" to synthesize a verified response...</pre>
+          </div>
+          <div class="telemetry-box" id="draft-telemetry-box">
+            Latency: 0ms | Tokens: 0 | Cost: $0.00000 | Model: -
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Model Router & Cost Analytics -->
+    <section id="tab-router" class="tab-pane">
+      <div class="grid-4 mb-15">
+        <div class="metric-box">
+          <div class="metric-label">Total AI Tokens Burned</div>
+          <div class="metric-value" id="router-tokens">48,250</div>
+          <div class="metric-sub">Across all agents</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Total LLM Cost</div>
+          <div class="metric-value text-accent-amber" id="router-cost">$0.0084</div>
+          <div class="metric-sub">Blended average</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Net Human Labor Value Saved</div>
+          <div class="metric-value text-accent-green" id="router-savings">$1,420.50</div>
+          <div class="metric-sub">99.9% Profit Margin</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Prompt Cache Hit Ratio</div>
+          <div class="metric-value text-primary" id="router-cache">84.2%</div>
+          <div class="metric-sub">SHA-256 LRU Cache</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">LLM Model Tier Routing Breakdown</h3>
+          </div>
+          <div class="stack-col-1" id="router-tier-breakdown">
+            <!-- Model stats populated dynamically -->
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Circuit Breakers & Provider Health</h3>
+            <button class="btn btn-outline" id="btn-reset-circuits">Reset Circuits</button>
+          </div>
+          <div class="stack-col-075" id="circuit-breaker-list">
+            <!-- Circuit states -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 4: Autopilot Mesh Hub -->
+    <section id="tab-network" class="tab-pane">
+      <div class="card mb-15">
+        <div class="card-header">
+          <h3 class="card-title">Autopilot Network Mesh Topology</h3>
+          <span class="badge-pill status-online">Inter-Autopilot RPC Active</span>
+        </div>
+        <div class="network-grid">
+          <div class="node-box node-primary">
+            <div class="node-title text-primary">Support Autopilot</div>
+            <div class="node-desc">Triage & Draft Hub</div>
+            <div class="node-status">ONLINE (Port 3080)</div>
+          </div>
+          <div class="node-box node-purple">
+            <div class="node-title text-accent-purple">FinOps Autopilot</div>
+            <div class="node-desc">Reconciliation & Churn</div>
+
+            <div class="node-status">CONNECTED (Bridge)</div>
+          </div>
+          <div class="node-box node-amber">
+            <div class="node-title text-accent-amber">JobForge</div>
+            <div class="node-desc">Batch Request Bundles</div>
+            <div class="node-status">CONTRACT v1.0.0</div>
+          </div>
+          <div class="node-box node-dim">
+            <div class="node-title">ControlPlane</div>
+            <div class="node-desc">Runner Orchestrator</div>
+            <div class="node-status">HEALTHY</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">FinOps Churn & Billing Signals Exported</h3>
+            <button class="btn btn-outline" id="btn-refresh-signals">Refresh</button>
+          </div>
+          <div class="ticket-list" id="finops-signals-list">
+            <!-- Signals -->
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Inter-Autopilot Unit Economics</h3>
+          </div>
+          <div id="unit-economics-view">
+            <pre>{
+  "tenantId": "demo-tenant",
+  "aiComputeCostPerTicketUSD": "$0.00018",
+  "humanHoursSaved": "0.67 hrs",
+  "netProfitMargin": "99.94%",
+  "churnSignalsEmitted": 2,
+  "billingDiscrepanciesFlagged": 1
+}</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 5: KB Explorer & Patch Diff -->
+    <section id="tab-kb" class="tab-pane">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Knowledge Base Articles</h3>
+            <input type="text" class="input-control" placeholder="Search KB articles..." id="kb-search-input" title="Search KB articles" aria-label="Search KB articles">
+          </div>
+          <div class="ticket-list" id="kb-articles-list">
+            <div class="ticket-item">
+              <div class="ticket-subject">Authentication & API Key Setup</div>
+              <div class="ticket-meta"><span>docs/auth.md</span> • <span>3 chunks</span> • <span>Relevance: 0.96</span></div>
+            </div>
+            <div class="ticket-item">
+              <div class="ticket-subject">Billing & Subscription Lifecycle</div>
+              <div class="ticket-meta"><span>docs/billing.md</span> • <span>4 chunks</span> • <span>Relevance: 0.91</span></div>
+            </div>
+            <div class="ticket-item">
+              <div class="ticket-subject">Rate Limits & Backoff Implementation</div>
+              <div class="ticket-meta"><span>docs/rate-limits.md</span> • <span>2 chunks</span> • <span>Relevance: 0.88</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Automated KB Patch Proposals</h3>
+            <span class="badge-pill badge-rfc">RFC Diff Format</span>
+          </div>
+          <div>
+            <p class="kb-diff-sub">
+              Generated automatically by KBPatchSynthesizerAgent based on recurring unaddressed customer inquiries:
+            </p>
+            <pre>--- a/docs/faq/common-troubleshooting.md
++++ b/docs/faq/common-troubleshooting.md
+@@ -14,6 +14,12 @@
+ ### Handling API Rate Limits & Throttling
+ When receiving HTTP 429 (Too Many Requests):
+ 1. Check response headers for `Retry-After`.
+ 2. Apply exponential backoff with random jitter.
+ 3. Ensure sliding-window token bucket is configured.</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

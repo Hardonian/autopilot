@@ -1,0 +1,7 @@
+packages:
+  - 'ops'
+  - 'ops/autopilot-suite/packages/*'
+  - 'finops'
+  - 'finops/packages/*'
+  - 'growth'
+  - 'support'

@@ -1,0 +1,22 @@
+{
+  "name": "autopilot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Unified runnerless autopilot platform: ops, finops, growth, and support automation",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --recursive build",
+    "test": "pnpm --recursive test",
+    "lint": "pnpm --recursive lint",
+    "typecheck": "pnpm --recursive typecheck",
+    "verify:fast": "pnpm --recursive verify:fast",
+    "verify:full": "pnpm --recursive verify:full",
+    "clean": "pnpm --recursive exec rm -rf dist node_modules"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "license": "MIT"
+}

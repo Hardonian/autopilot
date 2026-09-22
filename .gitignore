@@ -1,0 +1,6 @@
+node_modules/
+dist/
+examples/output.tmp/
+autopilot-suite/packages/**/dist/
+artifacts/
+nul

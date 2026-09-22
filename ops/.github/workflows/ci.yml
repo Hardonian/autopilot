@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify-fast:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Verify fast (lint + typecheck + build)
+        run: pnpm verify:fast
+      - name: Verify JobForge contracts compatibility
+        run: pnpm contracts:compat
+      - name: Run contract tests
+        run: pnpm test -- tests/contracts.test.ts
+      - name: Run runner-std tests
+        run: pnpm test -- tests/runner-std.test.ts
+      - name: Plan (dry-run smoke)
+        run: pnpm plan
+      - name: Run --smoke
+        run: pnpm run:smoke
+      - name: Doctor
+        run: pnpm doctor
+      - name: Contracts check
+        run: pnpm contracts:check
+
+  contract-tests:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build
+        run: pnpm build
+      - name: Run contract tests
+        run: pnpm test -- tests/contracts.test.ts
+      - name: Run capability tests
+        run: pnpm test -- tests/health-audit.test.ts
+
+  verify-full:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Verify full (lint + typecheck + build + test)
+        run: pnpm verify:full
+      - name: Verify JobForge contracts compatibility
+        run: pnpm contracts:compat
+      - name: Verify docs
+        run: pnpm docs:verify
+      - name: Plan (dry-run smoke)
+        run: pnpm plan
+      - name: Run --smoke
+        run: pnpm run:smoke
+      - name: Doctor
+        run: pnpm doctor
+      - name: Contracts check
+        run: pnpm contracts:check
